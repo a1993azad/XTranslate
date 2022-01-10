@@ -241,7 +241,7 @@ export class UserHistory extends React.Component {
   }
 
   renderHistoryItem(item: IHistoryItem): React.ReactNode {
-    var { id: itemId, vendor, from: langFrom, to: langTo, text, translation, transcription, dictionary } = item;
+    var { id: itemId, vendor, from: langFrom, to: langTo, text, translation,pronunciations, transcription, dictionary } = item;
     var showDetails = this.detailsVisible.has(itemId);
     var translator = getTranslator(vendor);
     return (
@@ -257,7 +257,7 @@ export class UserHistory extends React.Component {
             {showDetails && (
               <Icon
                 material="play_circle_outline"
-                onClick={prevDefault(() => translator.speak(langFrom, text))}
+                onClick={prevDefault(() => pronunciations && pronunciations.length?translator.speak(pronunciations):translator.speak(langFrom, text))}
               />
             )}
             <span className="text">{text}</span>

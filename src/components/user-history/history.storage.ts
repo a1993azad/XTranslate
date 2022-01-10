@@ -164,6 +164,7 @@ export interface IHistoryItem {
   to: string
   text: string
   translation: string
+  pronunciations?: string[]
   transcription?: string
   dictionary: {
     wordType: string

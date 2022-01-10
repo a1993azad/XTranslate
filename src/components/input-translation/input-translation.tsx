@@ -69,8 +69,14 @@ export class InputTranslation extends React.Component {
   }
 
   playText = () => {
-    const { vendor, langDetected, originalText } = this.translation;
-    getTranslator(vendor).speak(langDetected, originalText);
+    const { vendor, langDetected, originalText,pronunciations } = this.translation;
+    if(pronunciations?.length){
+
+      getTranslator(vendor).speak(pronunciations);
+    }else{
+
+      getTranslator(vendor).speak(langDetected, originalText);
+    }
   }
 
   @action
@@ -193,11 +199,14 @@ export class InputTranslation extends React.Component {
         ) : null}
         <table className="dictionary">
           <tbody>
-          {dictionary.map(({ wordType, meanings }) => {
+          {dictionary.map(({ wordType, meanings,transcription }) => {
             return (
               <Fragment key={wordType}>
                 <tr>
                   <td className="word-type" colSpan={2}>{wordType}</td>
+                </tr>
+                <tr>
+                  <td  colSpan={2}> {transcription}</td>
                 </tr>
                 {meanings.map(meaning => {
                   var examples = meaning.examples
@@ -207,7 +216,8 @@ export class InputTranslation extends React.Component {
                     <tr key={meaning.word}>
                       <td className="word">
                         {meaning.word}
-                        {examples ? <span className="examples" title={examples}>*</span> : null}
+                       
+                        {examples ? <span className="examples ltr" title={examples}></span> : null}
                       </td>
                       <td className="word-meanings">
                         {meaning.translation.map((word, i, list) => {

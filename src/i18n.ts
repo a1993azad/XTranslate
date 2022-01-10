@@ -4,9 +4,10 @@ import { createStorageHelper } from "./extension/storage";
 import { getURL } from "./extension";
 import { createLogger } from "./utils";
 
-export type Locale = "en" | "de" | "ru" | "sr" | "zh_TW";
+export type Locale = "en" | "de" | "ru" | "sr" | "zh_TW" | "fa";
 
 export const supportedLocales: Record<Locale, string> = {
+  fa: "Persian",
   en: "English",
   de: "German",
   ru: "Russian",
@@ -49,7 +50,7 @@ export function getMessage(key: string, placeholders: Record<string, React.React
 export function getMessage(key: string, placeholders?: Record<string, React.ReactNode>): React.ReactNode {
   const message =
     messages.get(getLocale())?.[key]?.message ||
-    messages.get("en")?.[key]?.message; // fallback locale is "EN"
+    messages.get("fa")?.[key]?.message; // fallback locale is "EN"
 
   if (!message) {
     return `[${key}]`; // not found
@@ -82,7 +83,7 @@ export function getSystemLocale(): Locale {
   if (supportedLocales[locale]) return locale;
 
   const lang = locale.split(/_-/)[0] as Locale; // handle "en-GB", etc.
-  return supportedLocales[lang] ? lang : "en";
+  return supportedLocales[lang] ? lang : "fa";
 }
 
 export async function detectLanguage(text: string): Promise<chrome.i18n.LanguageDetectionResult> {
@@ -91,6 +92,6 @@ export async function detectLanguage(text: string): Promise<chrome.i18n.Language
 
 export async function i18nInit() {
   await storage.whenReady;
-  await loadMessages("en"); // preload english as fallback locale
+  await loadMessages("fa"); // preload english as fallback locale
   await loadMessages(getLocale()); // load current locale
 }

@@ -46,11 +46,17 @@ export abstract class Translator {
       apply: async (translate, callContext, [params]: [TranslateParams]): Promise<ITranslationResult> => {
         const result: ITranslationResult = await Reflect.apply(translate, this, [params]);
         const translation = this.normalize(result, params);
-        const { langDetected, originalText } = translation;
+        const { langDetected, originalText,pronunciations } = translation;
 
         // handle side-effects
         if (settingsStore.data.autoPlayText) {
-          this.speak(langDetected, originalText);
+          if(pronunciations?.length){
+
+            this.speak(pronunciations);
+          }else{
+
+            this.speak(langDetected, originalText);
+          }
         }
         if (settingsStore.data.historyEnabled) {
           saveToHistory(translation);
@@ -126,8 +132,21 @@ export abstract class Translator {
     return result;
   };
 
-  async speak(lang: string, text: string) {
-    this.stopSpeaking();
+  async speak(lang: string | string[], text?: string) {
+    if(Array.isArray(lang)){
+      const pronunciations=lang;
+      var audioUrl = pronunciations?.length ?pronunciations[0]:'';
+      if (!this.audio) {
+        this.audio = document.createElement('audio');
+        this.audio.autoplay = true;
+        this.audio.src = audioUrl;
+      } else {
+        await this.audio.play();
+      }
+    }else{
+
+      this.stopSpeaking();
+    }
     console.log(`TODO: tts play, lang: ${lang}`, text)
     // var audioUrl = this.getAudioUrl(lang, text);
     // if (settingsStore.data.useChromeTtsEngine || !audioUrl) {
@@ -165,7 +184,7 @@ export interface ITranslationResult {
   originalText?: string
   langFrom?: string
   langTo?: string
-
+  pronunciations?:string[]
   // should be provided from api response in `translate(params)`
   translation: string
   langDetected?: string

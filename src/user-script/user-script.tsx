@@ -149,8 +149,14 @@ class App extends React.Component {
   }
 
   playText = () => {
-    const { vendor, langDetected, originalText } = this.translation;
-    getTranslator(vendor).speak(langDetected, originalText);
+    const { vendor, langDetected, originalText,pronunciations } = this.translation;
+    if(pronunciations?.length){
+
+      getTranslator(vendor).speak(pronunciations);
+    }else{
+      
+      getTranslator(vendor).speak(langDetected, originalText);
+    }
   }
 
   showIcon() {
@@ -217,7 +223,7 @@ class App extends React.Component {
         focusOffset = commonAncestorText.indexOf(focusNode.textContent);
       }
       var rects = Array.from(range.getClientRects());
-      if (!rects.length) {
+      if (!rects?.length) {
         if (this.isEditable(document.activeElement)) {
           rects.push(document.activeElement.getBoundingClientRect());
         } else if (focusNode === anchorNode && focusNode instanceof HTMLElement) {
@@ -257,12 +263,12 @@ class App extends React.Component {
     // add initial position to the end in case of nothing will fit
     positions.slice(1).concat(positions[0])
       .forEach(({ left, right, top, bottom }) => {
-        var popupPos = this.popup.elem.getBoundingClientRect();
-        if (popupPos.left < 0 || popupPos.right > viewPort.width) {
+        var popupPos = this?.popup?.elem?.getBoundingClientRect();
+        if (popupPos?.left < 0 || popupPos?.right > viewPort.width) {
           this.position.left = left;
           this.position.right = right;
         }
-        if (popupPos.top < 0 || popupPos.bottom > viewPort.height) {
+        if (popupPos?.top < 0 || popupPos?.bottom > viewPort.height) {
           this.position.top = top;
           this.position.bottom = bottom;
         }
@@ -317,7 +323,7 @@ class App extends React.Component {
     if (rightBtnClick) {
       return;
     }
-    if (!this.icon.elem.contains(clickedElem)) {
+    if (!this?.icon?.elem?.contains(clickedElem)) {
       this.hideIcon();
     }
     if (this.isOutside(clickedElem)) {

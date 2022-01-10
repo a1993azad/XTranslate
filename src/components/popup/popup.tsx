@@ -201,16 +201,21 @@ export class Popup extends React.Component<Props> {
             {this.renderNextTranslationIcon()}
           </div>
         </div>
-        {dictionary.map(({ wordType, meanings }) =>
+        {dictionary.map(({ wordType, meanings,transcription }) =>
           <div key={wordType} className={cssNames("dictionary", rtlClass)}>
             <div className="word-type">{wordType}</div>
+            <div className="word-type" >{transcription}</div>
             <div className="word-meanings">
               {meanings.map((meaning, i, list) => {
+                var examples = meaning.examples
+                ? meaning.examples.map(example => example.join(" - ")).join("\n")
+                : "";
                 var last = i === list.length - 1;
                 var title = meaning.translation.join(", ") || null;
                 return [
-                  <span key={i} className="word" title={title}>{meaning.word}</span>,
-                  !last ? ", " : null
+                  <p key={i} className="word" style={{direction:'ltr'}} title={title}>{meaning.word}</p>,
+                  !last ? ", " : null,
+                  examples ? <p className="small" style={{direction:'ltr'}} ><sub>{examples}</sub></p> : null
                 ]
               })}
             </div>

@@ -12,7 +12,7 @@ export const themeStorage = createStorageHelper("theme", {
     bgcSecondary: { r: 98, g: 101, b: 101, a: .95 } as Color,
     bgcLinear: true,
     fontSize: 15,
-    fontFamily: "Open Sans",
+    fontFamily: "iransans",
     textColor: { r: 255, g: 255, b: 255, a: .85 } as Color,
     textShadowRadius: 0,
     textShadowOffsetX: 0,
@@ -53,14 +53,8 @@ export class ThemeStore {
   };
 
   public bundledFonts: IThemeFont[] = [
-    { familyName: "Roboto", fileName: "Roboto-Regular.ttf" },
-    { familyName: "Lato", fileName: "Lato-Regular.ttf" },
-    { familyName: "Open Sans", fileName: "OpenSans-Regular.ttf" },
-    { familyName: "Raleway", fileName: "Raleway-Regular.ttf" },
-    { familyName: "Lobster", fileName: "Lobster-Regular.ttf" },
-    { familyName: "Arial" }, // system fonts
-    { familyName: "Helvetica Neue" },
-    { familyName: "Times New Roman" },
+    { familyName: "iransansBold", fileName: "IRANSansWeb_Bold.ttf" },
+    { familyName: "iransans", fileName: "IRANSansWeb.ttf" },
   ];
 
   public borderStyle = [
